@@ -6,7 +6,7 @@ describe("findPathTyped", () => {
 
   test("should find the straightest path in a horizontal line", () => {
     const grid = new Uint8Array(width * height).fill(0);
-    const result = findPathTyped(0, 2, grid);
+    const result = findPathTyped(0, 2, grid, width, height);
     expect(result).toEqual([0, 1, 2]);
     expect(grid[1]).toBe(4);
   });
@@ -16,7 +16,7 @@ describe("findPathTyped", () => {
 
     for (let y = 0; y < width; y++) grid[y * width + 1] = 1;
 
-    const result = findPathTyped(0, 2, grid);
+    const result = findPathTyped(0, 2, grid, width, height);
     expect(result).toBeNull;
   });
 
@@ -24,7 +24,7 @@ describe("findPathTyped", () => {
     const grid = new Uint8Array(width * height).fill(0);
     const start = 0;
     const end = width * height - 1;
-    const result = findPathTyped(start, end, grid);
+    const result = findPathTyped(start, end, grid, width, height);
 
     expect(result).toBeDefined();
     if (result !== null) {
@@ -40,7 +40,7 @@ describe("findPathTyped", () => {
   test("should treat squares with a value of 3 as passable", () => {
     const grid = new Uint8Array(width * height).fill(0);
     grid[1] = 3;
-    const result = findPathTyped(0, 2, grid);
+    const result = findPathTyped(0, 2, grid, width, height);
     expect(result).toEqual([0, 1, 2]);
   });
 });

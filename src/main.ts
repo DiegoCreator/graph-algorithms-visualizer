@@ -4,6 +4,9 @@ import { drawGrid } from "./renderer";
 const GRID_SIZE = 50;
 const grid = new Uint8Array(GRID_SIZE * GRID_SIZE);
 
+const width = 50;
+const height = 50;
+
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement | null;
 let startIdx: number | null = null;
 let endIdx: number | null = null;
@@ -64,7 +67,7 @@ function handleInput(event: MouseEvent) {
 
 btnStartBfs?.addEventListener("click", () => {
   if (startIdx !== null && endIdx !== null) {
-    console.log(findPathTyped(startIdx, endIdx, grid));
+    console.log(findPathTyped(startIdx, endIdx, grid, width, height));
     drawGrid(grid, GRID_SIZE);
   } else {
     alert("You must first mark the Start and Finish lines on the board!");

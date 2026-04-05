@@ -12,7 +12,7 @@ export const GRID_CELL = {
 } as const;
 
 export const CELL_COLORS: Record<number, string | null> = {
-  [GRID_CELL.EMPTY]: null,
+  [GRID_CELL.EMPTY]: null, // null means the cell is transparent
   [GRID_CELL.WALL]: "#333",
   [GRID_CELL.START]: "#2ECC71",
   [GRID_CELL.TARGET]: "#E74C3C",

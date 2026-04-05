@@ -1,41 +1,47 @@
+import { CELL_COLORS } from "./constants";
+
 export function drawGrid(grid: Uint8Array, gridSize: number) {
   const canvas = document.getElementById(
     "myCanvas",
   ) as HTMLCanvasElement | null;
+  const ctx = canvas?.getContext("2d");
 
-  if (!canvas) {
-    throw new Error("Canvas element not found!");
-  }
-
-  const ctx = canvas.getContext("2d");
-
-  if (!ctx) {
-    throw new Error("Canvas element not found!");
-  }
+  if (!ctx || !canvas) throw new Error("Canvas element not found!");
 
   const cellSize = canvas.width / gridSize;
 
-  ctx.strokeStyle = "red";
-  ctx.lineWidth = 1;
-
-  ctx.beginPath();
-
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  drawGridCells(ctx, grid, gridSize, cellSize);
+  drawGridLines(ctx, gridSize, cellSize, canvas.width, canvas.height);
+}
+
+function drawGridCells(
+  ctx: CanvasRenderingContext2D,
+  grid: Uint8Array,
+  gridSize: number,
+  cellSize: number,
+) {
   for (let i = 0; i < grid.length; i++) {
-    if (grid[i] !== 0) {
+    const color = CELL_COLORS[grid[i]];
+
+    if (color) {
       const x = (i % gridSize) * cellSize;
       const y = Math.floor(i / gridSize) * cellSize;
 
-      if (grid[i] === 1) ctx.fillStyle = "#333";
-      if (grid[i] === 2) ctx.fillStyle = "#2ECC71";
-      if (grid[i] === 3) ctx.fillStyle = "#E74C3C";
-      if (grid[i] === 4) ctx.fillStyle = "#F1C40F";
-
+      ctx.fillStyle = color;
       ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
     }
   }
+}
 
+function drawGridLines(
+  ctx: CanvasRenderingContext2D,
+  gridSize: number,
+  cellSize: number,
+  width: number,
+  height: number,
+) {
   if (gridSize <= 1000) {
     ctx.beginPath();
     ctx.strokeStyle = "red";
@@ -45,10 +51,10 @@ export function drawGrid(grid: Uint8Array, gridSize: number) {
       const pos = i * cellSize;
 
       ctx.moveTo(pos, 0);
-      ctx.lineTo(pos, canvas.height);
+      ctx.lineTo(pos, height);
 
       ctx.moveTo(0, pos);
-      ctx.lineTo(canvas.width, pos);
+      ctx.lineTo(width, pos);
     }
     ctx.stroke();
   }

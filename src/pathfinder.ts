@@ -1,9 +1,4 @@
-/**
- * Enum representing possible states of a grid cell.
- * Using 'as const' for literal types and better performance.
- */
-
-const GRID_CELL = { EMPTY: 0, WALL: 1, START: 2, TARGET: 3, PATH: 4 } as const;
+import { GRID_CELL } from "./constants";
 
 /**
  * Standard 4-directional movement (Up, Down, Left, Right).

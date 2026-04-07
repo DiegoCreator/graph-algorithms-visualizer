@@ -1,4 +1,6 @@
 import { GRID_CELL } from "./constants";
+import { reconstructPath } from "./utils";
+import type { PathfindingFn } from "./pathfinder.types";
 
 /**
  * Standard 4-directional movement (Up, Down, Left, Right).
@@ -16,13 +18,13 @@ const DIRECTIONS = [
  * Works on a flat Uint8Array for memory efficiency.
  */
 
-export function findPathTyped(
+export const findPathBFS: PathfindingFn = (
   startIdx: number,
   endIdx: number,
   grid: Uint8Array,
   width: number,
   height: number,
-): number[] | null {
+): number[] | null => {
   // Use a simple array as a queue for BFS.
   // For very large grids, a circular buffer or specialized Queue would be faster than shift().
   const queue: number[] = [startIdx];
@@ -67,29 +69,4 @@ export function findPathTyped(
     }
   }
   return null;
-}
-
-/**
- * Backtracks from the end node to the start node using the parents array.
- * Modifies the grid to mark the final path.
- */
-function reconstructPath(
-  endIdx: number,
-  parents: Int32Array,
-  grid: Uint8Array,
-): number[] {
-  const path: number[] = [];
-  let temp = endIdx;
-
-  while (temp !== -1) {
-    // Mark empty cells as part of the path (avoid overwriting START/TARGET visuals)
-    if (grid[temp] === GRID_CELL.EMPTY) {
-      grid[temp] = GRID_CELL.PATH;
-    }
-    path.push(temp);
-    temp = parents[temp]; // Move to the previous node in the path
-  }
-
-  // Reverse because we backtracked from Target -> Start
-  return path.reverse();
-}
+};

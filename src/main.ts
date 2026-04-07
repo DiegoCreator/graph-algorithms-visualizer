@@ -1,4 +1,4 @@
-import { findPathTyped } from "./pathfinder";
+import { findPathBFS } from "./bfs";
 import { drawGrid } from "./renderer";
 
 const GRID_SIZE = 50;
@@ -11,8 +11,8 @@ const canvas = document.getElementById("myCanvas") as HTMLCanvasElement | null;
 let startIdx: number | null = null;
 let endIdx: number | null = null;
 
-const btnStartBfs = document.getElementById("runBfs");
-const btnReset = document.getElementById("resetBfs");
+const btnStartAlgorithm = document.getElementById("runAlgorithm");
+const btnReset = document.getElementById("reset");
 let isDrawing = false;
 let clickCount = 0;
 
@@ -65,9 +65,9 @@ function handleInput(event: MouseEvent) {
   }
 }
 
-btnStartBfs?.addEventListener("click", () => {
+btnStartAlgorithm?.addEventListener("click", () => {
   if (startIdx !== null && endIdx !== null) {
-    console.log(findPathTyped(startIdx, endIdx, grid, width, height));
+    console.log(findPathBFS(startIdx, endIdx, grid, width, height));
     drawGrid(grid, GRID_SIZE);
   } else {
     alert("You must first mark the Start and Finish lines on the board!");

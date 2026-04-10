@@ -1,17 +1,6 @@
-import { GRID_CELL } from "./constants";
+import { GRID_CELL, DIRECTIONS } from "./constants";
 import { reconstructPath } from "./utils";
 import type { PathfindingFn } from "./pathfinder.types";
-
-/**
- * Standard 4-directional movement (Up, Down, Left, Right).
- */
-
-const DIRECTIONS = [
-  [0, 1],
-  [0, -1],
-  [1, 0],
-  [-1, 0],
-] as const;
 
 /**
  * Finds the shortest path in a grid using Breadth-First Search (BFS).

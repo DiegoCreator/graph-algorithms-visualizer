@@ -18,3 +18,13 @@ export const CELL_COLORS: Record<number, string | null> = {
   [GRID_CELL.TARGET]: "#E74C3C",
   [GRID_CELL.PATH]: "#F1C40F",
 };
+
+/**
+ * Standard 4-directional movement (Up, Down, Left, Right).
+ */
+export const DIRECTIONS = [
+  [0, 1],
+  [0, -1],
+  [1, 0],
+  [-1, 0],
+] as const;

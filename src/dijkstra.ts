@@ -1,0 +1,71 @@
+import { GRID_CELL, DIRECTIONS } from "./constants";
+import { reconstructPath } from "./utils";
+import { MinHeap } from "./MinHeap";
+import type { PathfindingFn } from "./pathfinder.types";
+
+export const findPathDijkstra: PathfindingFn = (
+  startIdx: number,
+  endIdx: number,
+  grid: Uint8Array,
+  width: number,
+  height: number,
+): number[] | null => {
+  const queue = new MinHeap();
+  const distances = new Float64Array(width * height).fill(Infinity);
+  const parents = new Int32Array(width * height).fill(-1);
+
+  distances[startIdx] = 0;
+
+  queue.push({ index: startIdx, priority: 0 });
+
+  while (!queue.isEmpty()) {
+    const current = queue.pop();
+    if (!current) break;
+
+    const currentIdx = current.index;
+
+    if (currentIdx === endIdx) {
+      return reconstructPath(endIdx, parents, grid);
+    }
+
+    for (const nIdx of getValidNeighbors(currentIdx, width, height, grid)) {
+      const weight = 1;
+      const newDist = distances[currentIdx] + weight;
+
+      if (newDist < distances[nIdx]) {
+        distances[nIdx] = newDist;
+        parents[nIdx] = currentIdx;
+
+        queue.push({ index: nIdx, priority: newDist });
+      }
+    }
+  }
+  return null;
+};
+
+function* getValidNeighbors(
+  idx: number,
+  width: number,
+  height: number,
+  grid: Uint8Array,
+) {
+  const currentX = idx % width;
+  const currentY = (idx / width) | 0;
+
+  for (let i = 0; i < DIRECTIONS.length; i++) {
+    const [dx, dy] = DIRECTIONS[i];
+    const neighborX = currentX + dx;
+    const neighborY = currentY + dy;
+
+    if (
+      neighborX >= 0 &&
+      neighborX < width &&
+      neighborY >= 0 &&
+      neighborY < height
+    ) {
+      const neighborIndex = neighborY * width + neighborX;
+
+      if (grid[neighborIndex] !== GRID_CELL.WALL) yield neighborIndex;
+    }
+  }
+}

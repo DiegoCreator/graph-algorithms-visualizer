@@ -9,6 +9,9 @@ export const GRID_CELL = {
   START: 2,
   TARGET: 3,
   PATH: 4,
+  GRASS: 1,
+  SAND: 5,
+  WATER: 10,
 } as const;
 
 export const CELL_COLORS: Record<number, string | null> = {

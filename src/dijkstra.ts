@@ -3,6 +3,12 @@ import { reconstructPath } from "./utils";
 import { MinHeap } from "./MinHeap";
 import type { PathfindingFn } from "./pathfinder.types";
 
+let WEIGHT_MAP = new Map<number, number>([
+  [GRID_CELL.GRASS, 1],
+  [GRID_CELL.SAND, 5],
+  [GRID_CELL.WATER, 10],
+]);
+
 export const findPathDijkstra: PathfindingFn = (
   startIdx: number,
   endIdx: number,
@@ -29,7 +35,8 @@ export const findPathDijkstra: PathfindingFn = (
     }
 
     for (const nIdx of getValidNeighbors(currentIdx, width, height, grid)) {
-      const weight = 1;
+      const weight = WEIGHT_MAP.get(grid[nIdx]) ?? 1;
+
       const newDist = distances[currentIdx] + weight;
 
       if (newDist < distances[nIdx]) {
@@ -69,3 +76,5 @@ function* getValidNeighbors(
     }
   }
 }
+
+// function getStepCost(cellType: number): number {}

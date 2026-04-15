@@ -1,4 +1,6 @@
 import { findPathBFS } from "./bfs";
+import { GRID_CELL } from "./constants";
+import { findPathDijkstra } from "./dijkstra";
 import { drawGrid } from "./renderer";
 
 const GRID_SIZE = 50;
@@ -6,6 +8,16 @@ const grid = new Uint8Array(GRID_SIZE * GRID_SIZE);
 
 const width = 50;
 const height = 50;
+
+const selector = document.getElementById("brush-selector");
+
+let currentBrush: number = GRID_CELL.WALL;
+
+selector?.addEventListener("change", (event) => {
+  const target = event.target as HTMLSelectElement;
+
+  currentBrush = parseInt(target.value, 10);
+});
 
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement | null;
 let startIdx: number | null = null;
@@ -36,6 +48,10 @@ canvas.addEventListener("mousemove", (event) => {
   }
 });
 
+canvas.addEventListener("contextmenu", (event) => {
+  event.preventDefault();
+});
+
 function handleInput(event: MouseEvent) {
   if (!canvas) {
     throw new Error("Canvas element not found!");
@@ -49,25 +65,34 @@ function handleInput(event: MouseEvent) {
 
   if (index < 0 || index >= grid.length) return;
 
-  if (grid[index] === 0) {
-    if (clickCount === 0) {
-      grid[index] = 2;
-      startIdx = index;
-      clickCount++;
-    } else if (clickCount === 1) {
-      grid[index] = 3;
-      endIdx = index;
-      clickCount++;
-    } else {
-      grid[index] = 1;
-    }
+  if (event.buttons === 2) {
+    if (grid[index] !== GRID_CELL.START && grid[index] !== GRID_CELL.TARGET)
+      grid[index] = GRID_CELL.EMPTY;
     drawGrid(grid, GRID_SIZE);
+    return;
+  }
+
+  if (event.buttons === 1) {
+    if (grid[index] === 0) {
+      if (clickCount === 0) {
+        grid[index] = 2;
+        startIdx = index;
+        clickCount++;
+      } else if (clickCount === 1) {
+        grid[index] = 3;
+        endIdx = index;
+        clickCount++;
+      } else {
+        grid[index] = currentBrush;
+      }
+      drawGrid(grid, GRID_SIZE);
+    }
   }
 }
 
 btnStartAlgorithm?.addEventListener("click", () => {
   if (startIdx !== null && endIdx !== null) {
-    console.log(findPathBFS(startIdx, endIdx, grid, width, height));
+    console.log(findPathDijkstra(startIdx, endIdx, grid, width, height));
     drawGrid(grid, GRID_SIZE);
   } else {
     alert("You must first mark the Start and Finish lines on the board!");

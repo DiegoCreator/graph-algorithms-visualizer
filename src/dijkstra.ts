@@ -4,7 +4,6 @@ import { MinHeap } from "./MinHeap";
 import type { PathfindingFn } from "./pathfinder.types";
 
 let WEIGHT_MAP = new Map<number, number>([
-  [GRID_CELL.GRASS, 1],
   [GRID_CELL.SAND, 5],
   [GRID_CELL.WATER, 10],
 ]);
@@ -76,5 +75,3 @@ function* getValidNeighbors(
     }
   }
 }
-
-// function getStepCost(cellType: number): number {}

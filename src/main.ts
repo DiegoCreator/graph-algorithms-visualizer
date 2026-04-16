@@ -10,13 +10,21 @@ const width = 50;
 const height = 50;
 
 const selector = document.getElementById("brush-selector");
+const algorithm_selector = document.getElementById("algorithm-selector");
 
 let currentBrush: number = GRID_CELL.WALL;
+let currentAlgorithm: string = "bfs";
 
 selector?.addEventListener("change", (event) => {
   const target = event.target as HTMLSelectElement;
 
   currentBrush = parseInt(target.value, 10);
+});
+
+algorithm_selector?.addEventListener("change", (event) => {
+  const target = event.target as HTMLSelectElement;
+
+  currentAlgorithm = target.value;
 });
 
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement | null;
@@ -92,7 +100,16 @@ function handleInput(event: MouseEvent) {
 
 btnStartAlgorithm?.addEventListener("click", () => {
   if (startIdx !== null && endIdx !== null) {
-    console.log(findPathDijkstra(startIdx, endIdx, grid, width, height));
+    switch (currentAlgorithm) {
+      case "bfs":
+        console.log(findPathBFS(startIdx, endIdx, grid, width, height));
+        break;
+      case "dijkstra":
+        console.log(findPathDijkstra(startIdx, endIdx, grid, width, height));
+        break;
+      default:
+        alert("Nie wybrano algorytmu");
+    }
     drawGrid(grid, GRID_SIZE);
   } else {
     alert("You must first mark the Start and Finish lines on the board!");

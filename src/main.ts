@@ -6,9 +6,6 @@ import { drawGrid } from "./renderer";
 const GRID_SIZE = 50;
 const grid = new Uint8Array(GRID_SIZE * GRID_SIZE);
 
-const width = 50;
-const height = 50;
-
 const selector = document.getElementById("brush-selector");
 const algorithm_selector = document.getElementById("algorithm-selector");
 
@@ -65,50 +62,76 @@ function handleInput(event: MouseEvent) {
     throw new Error("Canvas element not found!");
   }
 
-  const rect = canvas.getBoundingClientRect();
-  const cellSize = canvas.width / GRID_SIZE;
-  const x = Math.floor((event.clientX - rect.left) / cellSize);
-  const y = Math.floor((event.clientY - rect.top) / cellSize);
-  const index = y * GRID_SIZE + x;
+  const index = getMousePositionInGrid(event, canvas);
 
-  if (index < 0 || index >= grid.length) return;
+  if (index === null) return;
 
   if (event.buttons === 2) {
-    if (grid[index] !== GRID_CELL.START && grid[index] !== GRID_CELL.TARGET)
-      grid[index] = GRID_CELL.EMPTY;
+    removeField(index);
     drawGrid(grid, GRID_SIZE);
     return;
   }
 
-  if (event.buttons === 1) {
-    if (grid[index] === 0) {
-      if (clickCount === 0) {
-        grid[index] = 2;
-        startIdx = index;
-        clickCount++;
-      } else if (clickCount === 1) {
-        grid[index] = 3;
-        endIdx = index;
-        clickCount++;
-      } else {
-        grid[index] = currentBrush;
-      }
-      drawGrid(grid, GRID_SIZE);
+  placeNode(index);
+  drawGrid(grid, GRID_SIZE);
+}
+
+function getMousePositionInGrid(event: MouseEvent, canvas: HTMLCanvasElement) {
+  const rect = canvas.getBoundingClientRect();
+  const cellSize = canvas.width / GRID_SIZE;
+
+  const x = Math.floor((event.clientX - rect.left) / cellSize);
+  const y = Math.floor((event.clientY - rect.top) / cellSize);
+
+  if (x < 0 || x >= grid.length || y < 0 || y >= GRID_SIZE) return null;
+
+  const index = y * GRID_SIZE + x;
+  return index;
+}
+
+function setStartNode(index: number) {
+  grid[index] = GRID_CELL.START;
+  startIdx = index;
+  clickCount++;
+}
+
+function setTargetNode(index: number) {
+  grid[index] = GRID_CELL.TARGET;
+  endIdx = index;
+  clickCount++;
+}
+
+function placeNode(index: number) {
+  if (grid[index] === GRID_CELL.EMPTY) {
+    if (clickCount === 0) {
+      setStartNode(index);
+    } else if (clickCount === 1) {
+      setTargetNode(index);
+    } else {
+      grid[index] = currentBrush;
     }
   }
+}
+
+function removeField(index: number) {
+  if (grid[index] === GRID_CELL.START || grid[index] === GRID_CELL.TARGET)
+    return;
+  grid[index] = GRID_CELL.EMPTY;
 }
 
 btnStartAlgorithm?.addEventListener("click", () => {
   if (startIdx !== null && endIdx !== null) {
     switch (currentAlgorithm) {
       case "bfs":
-        console.log(findPathBFS(startIdx, endIdx, grid, width, height));
+        console.log(findPathBFS(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE));
         break;
       case "dijkstra":
-        console.log(findPathDijkstra(startIdx, endIdx, grid, width, height));
+        console.log(
+          findPathDijkstra(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE),
+        );
         break;
       default:
-        alert("Nie wybrano algorytmu");
+        alert("No algorithm selected");
     }
     drawGrid(grid, GRID_SIZE);
   } else {

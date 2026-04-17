@@ -1,9 +1,10 @@
+import { findPathAStar } from "./a-star";
 import { findPathBFS } from "./bfs";
 import { GRID_CELL } from "./constants";
 import { findPathDijkstra } from "./dijkstra";
 import { drawGrid } from "./renderer";
 
-const GRID_SIZE = 50;
+const GRID_SIZE = 100;
 const grid = new Uint8Array(GRID_SIZE * GRID_SIZE);
 
 const selector = document.getElementById("brush-selector");
@@ -128,6 +129,11 @@ btnStartAlgorithm?.addEventListener("click", () => {
       case "dijkstra":
         console.log(
           findPathDijkstra(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE),
+        );
+        break;
+      case "a*":
+        console.log(
+          findPathAStar(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE),
         );
         break;
       default:

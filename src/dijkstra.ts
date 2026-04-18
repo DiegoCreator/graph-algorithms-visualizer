@@ -29,6 +29,9 @@ export const findPathDijkstra: PathfindingFn = (
 
     const currentIdx = current.index;
 
+    if (currentIdx !== startIdx && currentIdx !== endIdx && currentIdx)
+      grid[currentIdx] = GRID_CELL.VISITED;
+
     if (currentIdx === endIdx) {
       return reconstructPath(endIdx, parents, grid);
     }

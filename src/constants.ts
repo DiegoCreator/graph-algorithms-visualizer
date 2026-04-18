@@ -9,6 +9,7 @@ export const GRID_CELL = {
   START: 2,
   TARGET: 3,
   PATH: 4,
+  VISITED: 5,
   SAND: 10,
   WATER: 20,
 } as const;

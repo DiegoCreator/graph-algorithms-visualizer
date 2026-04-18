@@ -14,7 +14,7 @@ export function reconstructPath(
 
   while (temp !== -1) {
     // Mark empty cells as part of the path (avoid overwriting START/TARGET visuals)
-    if (grid[temp] === GRID_CELL.EMPTY) {
+    if (grid[temp] === GRID_CELL.EMPTY || grid[temp] === GRID_CELL.VISITED) {
       grid[temp] = GRID_CELL.PATH;
     }
     path.push(temp);

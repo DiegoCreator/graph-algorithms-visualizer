@@ -37,6 +37,9 @@ export const findPathAStar: PathfindingFn = (
 
     const currentIdx = current.index;
 
+    if (currentIdx !== startIdx && currentIdx !== endIdx && currentIdx)
+      grid[currentIdx] = GRID_CELL.VISITED;
+
     if (currentIdx === endIdx) {
       return reconstructPath(endIdx, parents, grid);
     }
@@ -57,7 +60,11 @@ export const findPathAStar: PathfindingFn = (
   return null;
 };
 
-function getManhattanDistance(idx: number, endIdx: number, width: number) {
+export function getManhattanDistance(
+  idx: number,
+  endIdx: number,
+  width: number,
+) {
   const x1 = idx % width;
   const y1 = (idx / width) | 0;
 

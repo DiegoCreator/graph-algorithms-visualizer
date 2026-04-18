@@ -46,7 +46,7 @@ function drawGridLines(
 ) {
   // We disable gridline drawing at very high density (over 1000 cells)
   // to avoid rendering performance issues and moiré.
-  if (gridSize <= 1200) {
+  if (gridSize <= 1000) {
     ctx.beginPath();
     ctx.strokeStyle = "red";
     ctx.lineWidth = 0.5;

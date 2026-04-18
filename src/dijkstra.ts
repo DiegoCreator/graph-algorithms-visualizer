@@ -49,7 +49,7 @@ export const findPathDijkstra: PathfindingFn = (
   return null;
 };
 
-function* getValidNeighbors(
+export function* getValidNeighbors(
   idx: number,
   width: number,
   height: number,

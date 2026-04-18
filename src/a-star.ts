@@ -1,6 +1,7 @@
-import { GRID_CELL, DIRECTIONS } from "./constants";
+import { GRID_CELL } from "./constants";
 import { reconstructPath } from "./utils";
 import { MinHeap } from "./MinHeap";
+import { getValidNeighbors } from "./dijkstra";
 import type { PathfindingFn } from "./pathfinder.types";
 
 let WEIGHT_MAP = new Map<number, number>([
@@ -27,6 +28,13 @@ export const findPathAStar: PathfindingFn = (
     const current = queue.pop();
     if (!current) break;
 
+    if (
+      current.priority >
+      distances[current.index] +
+        getManhattanDistance(current.index, endIdx, width)
+    )
+      continue;
+
     const currentIdx = current.index;
 
     if (currentIdx === endIdx) {
@@ -48,33 +56,6 @@ export const findPathAStar: PathfindingFn = (
   }
   return null;
 };
-
-function* getValidNeighbors(
-  idx: number,
-  width: number,
-  height: number,
-  grid: Uint8Array,
-) {
-  const currentX = idx % width;
-  const currentY = (idx / width) | 0;
-
-  for (let i = 0; i < DIRECTIONS.length; i++) {
-    const [dx, dy] = DIRECTIONS[i];
-    const neighborX = currentX + dx;
-    const neighborY = currentY + dy;
-
-    if (
-      neighborX >= 0 &&
-      neighborX < width &&
-      neighborY >= 0 &&
-      neighborY < height
-    ) {
-      const neighborIndex = neighborY * width + neighborX;
-
-      if (grid[neighborIndex] !== GRID_CELL.WALL) yield neighborIndex;
-    }
-  }
-}
 
 function getManhattanDistance(idx: number, endIdx: number, width: number) {
   const x1 = idx % width;

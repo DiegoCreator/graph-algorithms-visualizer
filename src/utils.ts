@@ -24,3 +24,21 @@ export function reconstructPath(
   // Reverse because we backtracked from Target -> Start
   return path.reverse();
 }
+
+export function benchmark(name: string, fn: () => any, iterations = 10) {
+  fn();
+
+  const times: number[] = [];
+  for (let i = 0; i < iterations; i++) {
+    const t0 = performance.now();
+    fn();
+    const t1 = performance.now();
+    times.push(t1 - t0);
+  }
+
+  const avg = times.reduce((a, b) => a + b) / iterations;
+  console.log(
+    `${name} - Average: ${avg.toFixed(2)}ms (over ${iterations} runs)`,
+  );
+  return avg;
+}

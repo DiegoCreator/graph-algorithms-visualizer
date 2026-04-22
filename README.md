@@ -40,11 +40,31 @@ The algorithms stop execution immediately after finding the target node.
 * **vitest 4.1.2** - Vite-native unit testing framework.
 
 ### 4. Usage
-```typescript
-const grid = 1000;
-const path = findPathBFS(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE);
 
-console.log(path);
+#### Quick Start (For Users)
+1. npm run dev.
+
+2. Open localhost:5173.
+
+3. Click once to set the Start, click second time to set the Target.
+
+4. Click on the grid to draw walls, water or sand and select an algorithm from the list.
+
+#### Library Usage (For Developers)
+
+```typescript
+import { findPathAStar } from "./a-star";
+import { GRID_CELL } from "./constants";
+
+// Prepare a 10x10 grid
+const grid = new Uint8Array(100).fill(0);
+
+grid[15] = GRID_CELL.WALL; // Impassable
+grid[16] = GRID_CELL.SAND; // Higher movement cost
+grid[17] = GRID_CELL.WATER; // Very high movement cost
+
+// Find path from index 0 (top-left) to 99 (bottom-right)
+const path = findPathAStar(0, 99, grid, 10, 10);
 ```
 
 ### 5. ⚙️ Installation & Setup

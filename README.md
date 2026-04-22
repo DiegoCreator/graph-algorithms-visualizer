@@ -66,7 +66,7 @@ We use npm (or yarn/pnpm) to install all dependencies, including Vite, TypeScrip
 npm install
 ```
 
-4. **Available Scripts
+4. **Available Scripts**
 
   The following commands are configured in the project:
 

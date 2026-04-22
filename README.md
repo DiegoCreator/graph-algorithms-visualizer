@@ -76,6 +76,26 @@ npm install
 
     * npm run preview – Allows you to preview a built production version.
 
-### 6. 🧾 License
+### 6. 💡Lessons Learned
+
+This project was a testing ground for me in terms of algorithms and performance optimization in the TypeScript environment.
+
+1. **Main challenges**
+
+* **Computational complexity:** On a 1000x1000 grid (1 million nodes), simple solutions failed. I learned how to avoid CPU bottlenecks by efficiently managing the priority queue.
+
+* **My own MinHeap implementation:** I understood the binary heap structure from scratch. This self-implementation was crucial for Dijkstra and A* to run in real time.
+
+* **Memory management:** I learned how the V8 engine handles large datasets and why it's better to use flat structures instead of deeply nested objects in such cases.
+
+2. **What I learned**
+
+* Implementing and optimizing the **BFS, Dijkstra, and A*** algorithms.
+
+* Practical applications of **heuristics** in navigation.
+
+* Writing clean, efficient code in TS
+
+### 7. 🧾 License
 
 This project is open-source and available under the MIT License.

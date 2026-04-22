@@ -123,6 +123,8 @@ function removeField(index: number) {
 
 btnStartAlgorithm?.addEventListener("click", () => {
   if (startIdx !== null && endIdx !== null) {
+    clearVisuals();
+
     switch (currentAlgorithm) {
       case "bfs":
         const path = benchmark("BFS Search", () =>
@@ -159,5 +161,13 @@ btnReset?.addEventListener("click", () => {
   endIdx = null;
   drawGrid(grid, GRID_SIZE);
 });
+
+function clearVisuals() {
+  for (let i = 0; i < grid.length; i++) {
+    if (grid[i] === GRID_CELL.VISITED || grid[i] === GRID_CELL.PATH) {
+      grid[i] = GRID_CELL.EMPTY;
+    }
+  }
+}
 
 drawGrid(grid, GRID_SIZE);

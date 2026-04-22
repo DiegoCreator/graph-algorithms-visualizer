@@ -5,7 +5,7 @@ import { findPathDijkstra } from "./dijkstra";
 import { drawGrid } from "./renderer";
 import { benchmark } from "./utils";
 
-const GRID_SIZE = 1000;
+const GRID_SIZE = 100;
 const grid = new Uint8Array(GRID_SIZE * GRID_SIZE);
 
 const selector = document.getElementById("brush-selector");
@@ -125,32 +125,23 @@ btnStartAlgorithm?.addEventListener("click", () => {
   if (startIdx !== null && endIdx !== null) {
     switch (currentAlgorithm) {
       case "bfs":
-        console.log(
-          findPathBFS(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE),
-
-          benchmark("BFS Search", () =>
-            findPathBFS(startIdx!, endIdx!, grid, GRID_SIZE, GRID_SIZE),
-          ),
+        const path = benchmark("BFS Search", () =>
+          findPathBFS(startIdx!, endIdx!, grid, GRID_SIZE, GRID_SIZE),
         );
+        console.log(path);
         break;
       case "dijkstra":
-        console.log(
-          findPathDijkstra(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE),
-
-          benchmark("Dijkstra Search", () =>
-            findPathDijkstra(startIdx!, endIdx!, grid, GRID_SIZE, GRID_SIZE),
-          ),
+        const path2 = benchmark("Dijkstra Search", () =>
+          findPathDijkstra(startIdx!, endIdx!, grid, GRID_SIZE, GRID_SIZE),
         );
+        console.log(path2);
 
         break;
       case "a*":
-        console.log(
-          findPathAStar(startIdx, endIdx, grid, GRID_SIZE, GRID_SIZE),
-
-          benchmark("A* Search", () =>
-            findPathAStar(startIdx!, endIdx!, grid, GRID_SIZE, GRID_SIZE),
-          ),
+        const path3 = benchmark("A* Search", () =>
+          findPathAStar(startIdx!, endIdx!, grid, GRID_SIZE, GRID_SIZE),
         );
+        console.log(path3);
         break;
       default:
         alert("No algorithm selected");

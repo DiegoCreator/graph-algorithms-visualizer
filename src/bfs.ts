@@ -28,6 +28,10 @@ export const findPathBFS: PathfindingFn = (
   while (head < queue.length) {
     const currentIdx = queue[head++];
 
+    if (currentIdx !== startIdx && currentIdx !== endIdx) {
+      grid[currentIdx] = GRID_CELL.VISITED;
+    }
+
     if (currentIdx === endIdx) {
       return reconstructPath(endIdx, parents, grid);
     }

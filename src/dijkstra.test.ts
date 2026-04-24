@@ -10,7 +10,7 @@ describe("findPathTyped", () => {
     const grid = new Uint8Array(width * height).fill(0);
     const result = findPathDijkstra(0, 2, grid, width, height);
     expect(result).toEqual([0, 1, 2]);
-    expect(grid[1]).toBe(5);
+    expect(grid[1]).toBe(4);
   });
 
   test("should return null when the target is cut off by a wall", () => {

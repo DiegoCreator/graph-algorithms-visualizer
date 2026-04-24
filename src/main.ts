@@ -5,7 +5,7 @@ import { findPathDijkstra } from "./dijkstra";
 import { drawGrid } from "./renderer";
 import { benchmark } from "./utils";
 
-const GRID_SIZE = 1000;
+const GRID_SIZE = 100;
 const grid = new Uint8Array(GRID_SIZE * GRID_SIZE);
 
 const selector = document.getElementById("brush-selector");

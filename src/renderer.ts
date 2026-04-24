@@ -22,6 +22,7 @@ function drawGridCells(
   gridSize: number,
   cellSize: number,
 ) {
+  const gap = cellSize > 5 ? 1 : 0;
   for (let i = 0; i < grid.length; i++) {
     const color = CELL_COLORS[grid[i]];
 
@@ -32,7 +33,7 @@ function drawGridCells(
       ctx.fillStyle = color;
       // Moving by 1px and shrinking by 2px creates a margin (gap) around the cell,
       // so the gridlines aren't completely obscured by the fill color
-      ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
+      ctx.fillRect(x + gap, y + gap, cellSize - gap * 2, cellSize - gap * 2);
     }
   }
 }
@@ -44,14 +45,21 @@ function drawGridLines(
   width: number,
   height: number,
 ) {
+  let step = 1;
   // We disable gridline drawing at very high density (over 1000 cells)
   // to avoid rendering performance issues and moiré.
   if (gridSize <= 1000) {
+    if (gridSize >= 250 && gridSize <= 600) {
+      step = 10;
+    } else if (gridSize > 600) {
+      step = 50;
+    }
+
     ctx.beginPath();
     ctx.strokeStyle = "red";
     ctx.lineWidth = 0.5;
 
-    for (let i = 0; i <= gridSize; i++) {
+    for (let i = 0; i <= gridSize; i += step) {
       const pos = i * cellSize;
 
       ctx.moveTo(pos, 0);
